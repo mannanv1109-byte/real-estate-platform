@@ -1,388 +1,1430 @@
 import { useState } from "react";
 import "./App.css";
+import LoginPage from "./page/LoginPage";
+import RegisterPage from "./page/RegisterPage";
 
 const properties = [
   {
     id: 1,
-    image:
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80",
     title: "Modern Luxury Villa",
-    location: "Rajkot, Gujarat",
-    price: "₹85 Lakh",
+    location: "Ahmedabad, Gujarat",
+    price: "₹1.25 Cr",
     type: "Villa",
     beds: 4,
     baths: 3,
-    area: "2,450 Sq.Ft",
+    area: "2,850 Sq.Ft",
+    image:
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=85",
   },
   {
     id: 2,
-    image:
-      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=900&q=80",
-    title: "Premium Family Home",
-    location: "Ahmedabad, Gujarat",
-    price: "₹72 Lakh",
-    type: "House",
-    beds: 3,
-    baths: 2,
-    area: "1,850 Sq.Ft",
-  },
-  {
-    id: 3,
-    image:
-      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=900&q=80",
-    title: "Elegant City Apartment",
+    title: "Premium City Apartment",
     location: "Surat, Gujarat",
-    price: "₹48 Lakh",
+    price: "₹75 Lakh",
     type: "Apartment",
     beds: 3,
     baths: 2,
-    area: "1,420 Sq.Ft",
+    area: "1,650 Sq.Ft",
+    image:
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=85",
+  },
+  {
+    id: 3,
+    title: "Premium Family Residence",
+    location: "Vadodara, Gujarat",
+    price: "₹95 Lakh",
+    type: "House",
+    beds: 4,
+    baths: 3,
+    area: "2,200 Sq.Ft",
+    image:
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=85",
+  },
+  {
+    id: 4,
+    title: "Contemporary Dream Home",
+    location: "Rajkot, Gujarat",
+    price: "₹88 Lakh",
+    type: "House",
+    beds: 4,
+    baths: 3,
+    area: "2,350 Sq.Ft",
+    image:
+      "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1200&q=85",
+  },
+  {
+    id: 5,
+    title: "Green Luxury Villa",
+    location: "Gandhinagar, Gujarat",
+    price: "₹1.45 Cr",
+    type: "Villa",
+    beds: 5,
+    baths: 4,
+    area: "3,400 Sq.Ft",
+    image:
+      "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&w=1200&q=85",
+  },
+  {
+    id: 6,
+    title: "Modern Urban Apartment",
+    location: "Ahmedabad, Gujarat",
+    price: "₹62 Lakh",
+    type: "Apartment",
+    beds: 3,
+    baths: 2,
+    area: "1,480 Sq.Ft",
+    image:
+      "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=1200&q=85",
+  },
+];
+
+const categories = [
+  {
+    title: "Apartments",
+    icon: "🏢",
+    type: "Apartment",
+    count: "2,500+ Properties",
+  },
+  {
+    title: "Independent Houses",
+    icon: "🏡",
+    type: "House",
+    count: "1,800+ Properties",
+  },
+  {
+    title: "Luxury Villas",
+    icon: "🏰",
+    type: "Villa",
+    count: "950+ Properties",
+  },
+  {
+    title: "Plots & Land",
+    icon: "🌳",
+    type: "All",
+    count: "1,200+ Properties",
   },
 ];
 
 function App() {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [search, setSearch] = useState("");
+  // ================= PAGE =================
+  const [currentPage, setCurrentPage] = useState("home");
 
-  const filteredProperties = properties.filter((property) =>
-    `${property.title} ${property.location} ${property.type}`
-      .toLowerCase()
-      .includes(search.toLowerCase())
-  );
+  // ================= NAVBAR =================
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  // ================= SEARCH =================
+  const [activeTab, setActiveTab] = useState("Buy");
+  const [location, setLocation] = useState("");
+  const [propertyType, setPropertyType] = useState("All");
+  const [priceRange, setPriceRange] = useState("Any Price");
+
+  // ================= PROPERTY =================
+  const [favorites, setFavorites] = useState([]);
+  const [showAll, setShowAll] = useState(false);
+
+  // ================= SCROLL =================
+  const scrollToSection = (id) => {
+    const section = document.getElementById(id);
+
+    if (section) {
+      section.scrollIntoView({
+        behavior: "smooth",
+      });
+    }
+
+    setMenuOpen(false);
+  };
+  if (currentPage === "login") {
+    return (
+      <LoginPage
+        onBackHome={() => setCurrentPage("home")}
+        onRegister={() => setCurrentPage("register")}
+      />
+    );
+  }
+
+  // Register page
+  if (currentPage === "register") {
+    return (
+      <RegisterPage
+        onBackHome={() => setCurrentPage("home")}
+        onLogin={() => setCurrentPage("login")}
+      />
+    );
+  }
+  
+
+  // ================= FAVORITE =================
+  const toggleFavorite = (id) => {
+    if (favorites.includes(id)) {
+      setFavorites(
+        favorites.filter((item) => item !== id)
+      );
+    } else {
+      setFavorites([...favorites, id]);
+    }
+  };
+
+  // ================= FILTER =================
+  const filteredProperties = properties.filter((property) => {
+    const searchText = location.toLowerCase().trim();
+
+    const locationMatch =
+      searchText === "" ||
+      property.location.toLowerCase().includes(searchText) ||
+      property.title.toLowerCase().includes(searchText);
+
+    const typeMatch =
+      propertyType === "All" ||
+      property.type === propertyType;
+
+    let priceMatch = true;
+
+    if (priceRange === "Under ₹50 Lakh") {
+      priceMatch = false;
+    }
+
+    if (priceRange === "₹50 - ₹80 Lakh") {
+      priceMatch =
+        property.price === "₹62 Lakh" ||
+        property.price === "₹75 Lakh";
+    }
+
+    if (priceRange === "₹80 Lakh - ₹1 Crore") {
+      priceMatch =
+        property.price === "₹88 Lakh" ||
+        property.price === "₹95 Lakh";
+    }
+
+    if (priceRange === "Above ₹1 Crore") {
+      priceMatch =
+        property.price === "₹1.25 Cr" ||
+        property.price === "₹1.45 Cr";
+    }
+
+    return (
+      locationMatch &&
+      typeMatch &&
+      priceMatch
+    );
+  });
+
+  const visibleProperties = showAll
+    ? filteredProperties
+    : filteredProperties.slice(0, 3);
+
+  // =====================================================
+  // SELLER DASHBOARD
+  // =====================================================
+
+  if (currentPage === "seller") {
+    return (
+      <SellerDashboard
+        onBackHome={() => setCurrentPage("home")}
+      />
+    );
+  }
+
+  // =====================================================
+  // HOME PAGE
+  // =====================================================
 
   return (
     <div className="app">
+
+      {/* ================= NAVBAR ================= */}
+
       <header className="navbar">
         <div className="container nav-content">
-          <div className="logo">
-            <span className="logo-icon">⌂</span>
-            <span>HomeNest</span>
-          </div>
 
-          <nav className={menuOpen ? "nav-links active" : "nav-links"}>
-            <a href="#home" onClick={() => setMenuOpen(false)}>
+          <button
+            className="logo"
+            onClick={() => scrollToSection("home")}
+          >
+            <span className="logo-icon">
+              ⌂
+            </span>
+
+            <span>
+              Estate<span>Pro</span>
+            </span>
+          </button>
+
+          <nav
+            className={
+              menuOpen
+                ? "nav-links active"
+                : "nav-links"
+            }
+          >
+
+            <button
+              onClick={() =>
+                scrollToSection("home")
+              }
+            >
               Home
-            </a>
-            <a href="#properties" onClick={() => setMenuOpen(false)}>
+            </button>
+
+            <button
+              onClick={() =>
+                scrollToSection("properties")
+              }
+            >
               Buy
-            </a>
-            <a href="#sell" onClick={() => setMenuOpen(false)}>
+            </button>
+
+            <button
+              onClick={() =>
+                scrollToSection("properties")
+              }
+            >
+              Rent
+            </button>
+
+            <button
+              onClick={() =>
+                scrollToSection("sell")
+              }
+            >
               Sell
-            </a>
-            <a href="#about" onClick={() => setMenuOpen(false)}>
+            </button>
+
+            <button
+              onClick={() =>
+                scrollToSection("about")
+              }
+            >
               About
-            </a>
-            <a href="#contact" onClick={() => setMenuOpen(false)}>
+            </button>
+
+            <button
+              onClick={() =>
+                scrollToSection("contact")
+              }
+            >
               Contact
-            </a>
+            </button>
+
           </nav>
 
           <div className="nav-actions">
-            <button className="login-btn">Login</button>
-            <button className="signup-btn">Get Started</button>
+
+            <button
+             className="login-btn"
+             onClick={() => setCurrentPage("login")}
+             >
+               Login
+             </button>
+
+            <button className="signup-btn">
+              Get Started
+            </button>
+
+            <button className="profile-btn">
+              👤
+            </button>
+
           </div>
 
           <button
             className="menu-btn"
-            onClick={() => setMenuOpen(!menuOpen)}
+            onClick={() =>
+              setMenuOpen(!menuOpen)
+            }
           >
-            ☰
+            {menuOpen ? "✕" : "☰"}
           </button>
+
         </div>
       </header>
 
-      <section className="hero" id="home">
+      {/* ================= HERO ================= */}
+
+      <section
+        className="hero"
+        id="home"
+      >
+
         <div className="hero-overlay"></div>
 
+        <div className="hero-floating floating-one">
+          ✦
+        </div>
+
+        <div className="hero-floating floating-two">
+          ⌂
+        </div>
+
         <div className="container hero-content">
+
           <div className="hero-text">
-            <span className="hero-badge">🏠 Find Your Dream Home</span>
+
+            <span className="hero-badge">
+              ✦ PREMIUM REAL ESTATE PLATFORM
+            </span>
 
             <h1>
-              Find a place you'll
+              Find a place
+              <br />
+              you'll{" "}
               <span>love to live.</span>
             </h1>
 
             <p>
-              Discover beautiful properties, connect directly with owners,
-              and find your perfect home with HomeNest.
+              Discover exceptional properties,
+              explore prime locations and connect
+              with trusted sellers — all in one
+              beautiful real estate experience.
             </p>
+
+            <div className="hero-buttons">
+
+              <button
+                className="primary-hero-btn"
+                onClick={() =>
+                  scrollToSection("properties")
+                }
+              >
+                Explore Properties
+                <span>→</span>
+              </button>
+
+              {/* SELL YOUR PROPERTY */}
+              <button
+                className="secondary-hero-btn"
+                onClick={() =>
+                  setCurrentPage("seller")
+                }
+              >
+                Sell Your Property
+              </button>
+
+            </div>
+
+            <div className="hero-trust">
+
+              <div className="avatar-stack">
+                <span>J</span>
+                <span>A</span>
+                <span>R</span>
+                <span>+</span>
+              </div>
+
+              <div>
+                <strong>5,000+</strong>
+                <small>
+                  Happy homeowners
+                </small>
+              </div>
+
+              <div className="trust-divider"></div>
+
+              <div>
+                <strong>4.9/5</strong>
+                <small>
+                  Customer rating ★
+                </small>
+              </div>
+
+            </div>
+
           </div>
 
+          {/* ================= SEARCH ================= */}
+
           <div className="search-box">
+
             <div className="search-tabs">
-              <button className="active-tab">Buy</button>
-              <button>Rent</button>
+
+              <button
+                className={
+                  activeTab === "Buy"
+                    ? "active-tab"
+                    : ""
+                }
+                onClick={() =>
+                  setActiveTab("Buy")
+                }
+              >
+                Buy
+              </button>
+
+              <button
+                className={
+                  activeTab === "Rent"
+                    ? "active-tab"
+                    : ""
+                }
+                onClick={() =>
+                  setActiveTab("Rent")
+                }
+              >
+                Rent
+              </button>
+
             </div>
 
             <div className="search-fields">
+
               <div className="search-field">
-                <label>LOCATION</label>
+
+                <label>
+                  LOCATION
+                </label>
 
                 <div className="input-wrapper">
+
                   <span>📍</span>
 
                   <input
                     type="text"
                     placeholder="City, Area or Location"
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
+                    value={location}
+                    onChange={(event) =>
+                      setLocation(
+                        event.target.value
+                      )
+                    }
                   />
+
                 </div>
+
               </div>
 
               <div className="search-field">
-                <label>PROPERTY TYPE</label>
 
-                <select>
-                  <option>All Properties</option>
-                  <option>Apartment</option>
-                  <option>House</option>
-                  <option>Villa</option>
-                  <option>Plot</option>
+                <label>
+                  PROPERTY TYPE
+                </label>
+
+                <select
+                  value={propertyType}
+                  onChange={(event) =>
+                    setPropertyType(
+                      event.target.value
+                    )
+                  }
+                >
+
+                  <option value="All">
+                    All Properties
+                  </option>
+
+                  <option value="Apartment">
+                    Apartment
+                  </option>
+
+                  <option value="House">
+                    House
+                  </option>
+
+                  <option value="Villa">
+                    Villa
+                  </option>
+
                 </select>
+
               </div>
 
               <div className="search-field">
-                <label>PRICE RANGE</label>
 
-                <select>
-                  <option>Any Price</option>
-                  <option>Under ₹50 Lakh</option>
-                  <option>₹50 - ₹80 Lakh</option>
-                  <option>₹80 Lakh - ₹1 Crore</option>
-                  <option>Above ₹1 Crore</option>
+                <label>
+                  PRICE RANGE
+                </label>
+
+                <select
+                  value={priceRange}
+                  onChange={(event) =>
+                    setPriceRange(
+                      event.target.value
+                    )
+                  }
+                >
+
+                  <option>
+                    Any Price
+                  </option>
+
+                  <option>
+                    Under ₹50 Lakh
+                  </option>
+
+                  <option>
+                    ₹50 - ₹80 Lakh
+                  </option>
+
+                  <option>
+                    ₹80 Lakh - ₹1 Crore
+                  </option>
+
+                  <option>
+                    Above ₹1 Crore
+                  </option>
+
                 </select>
+
               </div>
 
-              <button className="search-btn">🔍 Search</button>
+              <button
+                className="search-btn"
+                onClick={() =>
+                  scrollToSection(
+                    "properties"
+                  )
+                }
+              >
+                <span>⌕</span>
+                Search
+              </button>
+
             </div>
+
           </div>
+
         </div>
+
       </section>
+
+      {/* ================= STATS ================= */}
 
       <section className="stats">
+
         <div className="container stats-grid">
+
           <div className="stat">
-            <strong>10K+</strong>
-            <span>Properties</span>
+            <strong>
+              10K<span>+</span>
+            </strong>
+            <span>
+              Premium Properties
+            </span>
           </div>
 
           <div className="stat">
-            <strong>5K+</strong>
-            <span>Happy Customers</span>
+            <strong>
+              5K<span>+</span>
+            </strong>
+            <span>
+              Happy Customers
+            </span>
           </div>
 
           <div className="stat">
-            <strong>25+</strong>
-            <span>Cities</span>
+            <strong>
+              25<span>+</span>
+            </strong>
+            <span>
+              Cities Covered
+            </span>
           </div>
 
           <div className="stat">
-            <strong>2K+</strong>
-            <span>Verified Sellers</span>
+            <strong>
+              2K<span>+</span>
+            </strong>
+            <span>
+              Verified Sellers
+            </span>
           </div>
+
         </div>
+
       </section>
 
-      <section className="properties-section" id="properties">
+      {/* ================= PROPERTIES ================= */}
+
+      <section
+        className="properties-section"
+        id="properties"
+      >
+
         <div className="container">
+
           <div className="section-heading">
+
             <div>
-              <span className="small-title">EXPLORE PROPERTIES</span>
-              <h2>Featured Properties</h2>
-              <p>Hand-picked properties from trusted sellers.</p>
+
+              <span className="small-title">
+                DISCOVER YOUR NEXT ADDRESS
+              </span>
+
+              <h2>
+                Featured Properties
+              </h2>
+
+              <p>
+                Hand-picked homes from trusted
+                property owners.
+              </p>
+
             </div>
 
-            <button className="view-all">View All Properties →</button>
+            <button
+              className="view-all"
+              onClick={() =>
+                setShowAll(!showAll)
+              }
+            >
+              {showAll
+                ? "Show Less ↑"
+                : "View All Properties →"}
+            </button>
+
           </div>
 
-          <div className="property-grid">
-            {filteredProperties.length > 0 ? (
-              filteredProperties.map((property) => (
-                <div className="property-card" key={property.id}>
-                  <div className="property-image">
-                    <img src={property.image} alt={property.title} />
+          {visibleProperties.length > 0 ? (
 
-                    <span className="property-tag">For Sale</span>
+            <div className="property-grid">
 
-                    <button className="heart-btn">♡</button>
-                  </div>
+              {visibleProperties.map(
+                (property) => (
 
-                  <div className="property-info">
-                    <div className="property-type">{property.type}</div>
+                  <article
+                    className="property-card"
+                    key={property.id}
+                  >
 
-                    <h3>{property.title}</h3>
+                    <div className="property-image">
 
-                    <p className="location">📍 {property.location}</p>
+                      <img
+                        src={property.image}
+                        alt={property.title}
+                      />
 
-                    <div className="property-details">
-                      <span>🛏 {property.beds} Beds</span>
-                      <span>🛁 {property.baths} Baths</span>
-                      <span>📐 {property.area}</span>
+                      <span className="property-tag">
+                        ✓ VERIFIED
+                      </span>
+
+                      <button
+                        className={
+                          favorites.includes(
+                            property.id
+                          )
+                            ? "heart-btn liked"
+                            : "heart-btn"
+                        }
+                        onClick={() =>
+                          toggleFavorite(
+                            property.id
+                          )
+                        }
+                      >
+                        {favorites.includes(
+                          property.id
+                        )
+                          ? "♥"
+                          : "♡"}
+                      </button>
+
+                      <div className="image-bottom">
+
+                        <span>
+                          {property.type}
+                        </span>
+
+                        <span>
+                          View 360°
+                        </span>
+
+                      </div>
+
                     </div>
 
-                    <div className="property-bottom">
-                      <strong>{property.price}</strong>
+                    <div className="property-info">
 
-                      <button>View Details</button>
+                      <div className="property-top">
+
+                        <div className="property-type">
+                          {property.type}
+                        </div>
+
+                        <span className="property-status">
+                          ● Available
+                        </span>
+
+                      </div>
+
+                      <h3>
+                        {property.title}
+                      </h3>
+
+                      <p className="location">
+                        📍 {property.location}
+                      </p>
+
+                      <div className="property-details">
+
+                        <span>
+                          🛏 {property.beds} Beds
+                        </span>
+
+                        <span>
+                          🛁 {property.baths} Baths
+                        </span>
+
+                        <span>
+                          📐 {property.area}
+                        </span>
+
+                      </div>
+
+                      <div className="property-bottom">
+
+                        <div>
+
+                          <small>
+                            Starting from
+                          </small>
+
+                          <strong>
+                            {property.price}
+                          </strong>
+
+                        </div>
+
+                        <button>
+                          View Details →
+                        </button>
+
+                      </div>
+
                     </div>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <div className="no-result">
-                <h3>No properties found</h3>
-                <p>Try another location or property name.</p>
-              </div>
-            )}
-          </div>
+
+                  </article>
+
+                )
+              )}
+
+            </div>
+
+          ) : (
+
+            <div className="no-result">
+
+              <div>⌕</div>
+
+              <h3>
+                No properties found
+              </h3>
+
+              <p>
+                Try another location,
+                property type or price range.
+              </p>
+
+            </div>
+
+          )}
+
         </div>
+
       </section>
 
+      {/* ================= CATEGORIES ================= */}
+
       <section className="categories">
+
         <div className="container">
+
           <div className="center-heading">
-            <span className="small-title">PROPERTY CATEGORIES</span>
-            <h2>Explore By Property Type</h2>
-            <p>Choose the property that fits your lifestyle.</p>
+
+            <span className="small-title">
+              FIND WHAT FITS YOU
+            </span>
+
+            <h2>
+              Explore By Property Type
+            </h2>
+
+            <p>
+              From modern apartments to luxury
+              villas, discover a property made
+              for you.
+            </p>
+
           </div>
 
           <div className="category-grid">
-            <div className="category-card">
-              <div className="category-icon">🏢</div>
-              <h3>Apartment</h3>
-              <p>2,500+ Properties</p>
-            </div>
 
-            <div className="category-card">
-              <div className="category-icon">🏡</div>
-              <h3>House</h3>
-              <p>1,800+ Properties</p>
-            </div>
+            {categories.map(
+              (category) => (
 
-            <div className="category-card">
-              <div className="category-icon">🏰</div>
-              <h3>Villa</h3>
-              <p>950+ Properties</p>
-            </div>
+                <button
+                  className="category-card"
+                  key={category.title}
+                  onClick={() => {
 
-            <div className="category-card">
-              <div className="category-icon">🌳</div>
-              <h3>Plots</h3>
-              <p>1,200+ Properties</p>
-            </div>
+                    setPropertyType(
+                      category.type
+                    );
+
+                    scrollToSection(
+                      "properties"
+                    );
+
+                  }}
+                >
+
+                  <div className="category-icon">
+                    {category.icon}
+                  </div>
+
+                  <h3>
+                    {category.title}
+                  </h3>
+
+                  <p>
+                    {category.count}
+                  </p>
+
+                  <span className="category-arrow">
+                    ↗
+                  </span>
+
+                </button>
+
+              )
+            )}
+
           </div>
+
         </div>
+
       </section>
 
-      <section className="sell-section" id="sell">
-        <div className="container sell-container">
-          <div className="sell-content">
-            <span className="small-title light">SELL YOUR PROPERTY</span>
+      {/* ================= EXPERIENCE ================= */}
 
-            <h2>Ready to sell your property?</h2>
+      <section className="experience-section">
+
+        <div className="container experience-grid">
+
+          <div className="experience-image">
+
+            <img
+              src="https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=1200&q=85"
+              alt="Premium interior"
+            />
+
+            <div className="experience-card">
+
+              <span>✦</span>
+
+              <div>
+
+                <strong>
+                  Premium Experience
+                </strong>
+
+                <small>
+                  Designed around your needs
+                </small>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <div className="experience-content">
+
+            <span className="small-title">
+              THE ESTATEPRO DIFFERENCE
+            </span>
+
+            <h2>
+              More than a property.
+              <span>
+                {" "}It's your next chapter.
+              </span>
+            </h2>
 
             <p>
-              List your property on HomeNest and connect with thousands
-              of verified buyers.
+              Buying or selling a home should
+              feel exciting, not complicated.
+              EstatePro brings properties,
+              people, locations and communication
+              together in one seamless platform.
             </p>
 
-            <button className="sell-btn">List Your Property →</button>
+            <div className="experience-list">
+
+              <div>
+
+                <span>01</span>
+
+                <div>
+
+                  <h4>
+                    Verified Properties
+                  </h4>
+
+                  <p>
+                    Browse properties reviewed
+                    by our platform.
+                  </p>
+
+                </div>
+
+              </div>
+
+              <div>
+
+                <span>02</span>
+
+                <div>
+
+                  <h4>
+                    Trusted Sellers
+                  </h4>
+
+                  <p>
+                    Connect with genuine
+                    property owners.
+                  </p>
+
+                </div>
+
+              </div>
+
+              <div>
+
+                <span>03</span>
+
+                <div>
+
+                  <h4>
+                    Smart Discovery
+                  </h4>
+
+                  <p>
+                    Find homes based on your
+                    location and needs.
+                  </p>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <button
+              className="dark-btn"
+              onClick={() =>
+                scrollToSection(
+                  "properties"
+                )
+              }
+            >
+              Discover EstatePro →
+            </button>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      {/* ================= SELL PROPERTY ================= */}
+
+      <section
+        className="sell-section"
+        id="sell"
+      >
+
+        <div className="sell-glow"></div>
+
+        <div className="container sell-container">
+
+          <div className="sell-content">
+
+            <span className="small-title light">
+              SELL WITH CONFIDENCE
+            </span>
+
+            <h2>
+              Your property
+              <br />
+              deserves the spotlight.
+            </h2>
+
+            <p>
+              List your property on EstatePro
+              and connect with verified buyers
+              looking for their next home.
+            </p>
+
+            <div className="sell-points">
+
+              <span>
+                ✓ Easy property listing
+              </span>
+
+              <span>
+                ✓ Verified buyer reach
+              </span>
+
+              <span>
+                ✓ Direct communication
+              </span>
+
+            </div>
+
+            {/* ===========================
+                IMPORTANT SELLER BUTTON
+            ============================ */}
+
+            <button
+              className="sell-btn"
+              onClick={() =>
+                setCurrentPage("seller")
+              }
+            >
+              List Your Property →
+            </button>
+
           </div>
 
           <div className="sell-image">
+
             <img
-              src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=900&q=80"
-              alt="Luxury house"
+              src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=85"
+              alt="Luxury property"
             />
+
+            <div className="sell-image-card">
+
+              <strong>
+                2,000+
+              </strong>
+
+              <span>
+                Verified sellers
+              </span>
+
+            </div>
+
           </div>
+
         </div>
+
       </section>
 
-      <section className="why-section" id="about">
+      {/* ================= WHY ESTATEPRO ================= */}
+
+      <section
+        className="why-section"
+        id="about"
+      >
+
         <div className="container">
+
           <div className="center-heading">
-            <span className="small-title">WHY HOMENEST</span>
-            <h2>Everything You Need in One Place</h2>
+
+            <span className="small-title">
+              BUILT FOR MODERN REAL ESTATE
+            </span>
+
+            <h2>
+              Everything you need,
+              <br />
+              in one place.
+            </h2>
+
+            <p>
+              A smarter experience for buyers
+              and sellers.
+            </p>
+
           </div>
 
           <div className="why-grid">
+
             <div className="why-card">
-              <div>✓</div>
-              <h3>Verified Properties</h3>
+
+              <div className="why-number">
+                01
+              </div>
+
+              <div className="why-icon">
+                ✓
+              </div>
+
+              <h3>
+                Verified Properties
+              </h3>
+
               <p>
-                Every property is reviewed to give you a safer experience.
+                Discover properties reviewed
+                for a safer and more reliable
+                experience.
               </p>
+
             </div>
 
             <div className="why-card">
-              <div>💬</div>
-              <h3>Direct Chat</h3>
+
+              <div className="why-number">
+                02
+              </div>
+
+              <div className="why-icon">
+                ⌁
+              </div>
+
+              <h3>
+                Direct Communication
+              </h3>
+
               <p>
-                Chat directly with property owners and sellers.
+                Connect directly with sellers
+                and discuss property details
+                easily.
               </p>
+
             </div>
 
             <div className="why-card">
-              <div>📍</div>
-              <h3>Real Location</h3>
+
+              <div className="why-number">
+                03
+              </div>
+
+              <div className="why-icon">
+                ⌖
+              </div>
+
+              <h3>
+                Location Discovery
+              </h3>
+
               <p>
-                Find exact property locations using interactive maps.
+                Explore properties based on
+                locations that match your
+                lifestyle.
               </p>
+
             </div>
 
             <div className="why-card">
-              <div>🔒</div>
-              <h3>Secure Platform</h3>
+
+              <div className="why-number">
+                04
+              </div>
+
+              <div className="why-icon">
+                ◆
+              </div>
+
+              <h3>
+                Premium Experience
+              </h3>
+
               <p>
-                Your account and property information stay protected.
+                A clean, modern and interactive
+                platform designed for effortless
+                property discovery.
               </p>
+
             </div>
+
           </div>
+
         </div>
+
       </section>
 
+      {/* ================= FINAL CTA ================= */}
+
+      <section className="final-cta">
+
+        <div className="cta-pattern"></div>
+
+        <div className="container final-cta-content">
+
+          <span>
+            YOUR NEXT HOME IS CLOSER THAN
+            YOU THINK
+          </span>
+
+          <h2>
+            Let's find the place
+            <br />
+            that feels like <i>home.</i>
+          </h2>
+
+          <button
+            onClick={() =>
+              scrollToSection(
+                "properties"
+              )
+            }
+          >
+            Start Exploring →
+          </button>
+
+        </div>
+
+      </section>
+
+      {/* ================= FOOTER ================= */}
+
       <footer id="contact">
+
         <div className="container footer-grid">
+
           <div className="footer-brand">
+
             <div className="logo">
-              <span className="logo-icon">⌂</span>
-              <span>HomeNest</span>
+
+              <span className="logo-icon">
+                ⌂
+              </span>
+
+              <span>
+                Estate<span>Pro</span>
+              </span>
+
             </div>
 
             <p>
-              Find your dream home with a smarter and simpler real estate
-              experience.
+              A smarter and more beautiful way
+              to discover, buy and sell real estate.
             </p>
+
+            <div className="socials">
+
+              <span>in</span>
+              <span>𝕏</span>
+              <span>◎</span>
+              <span>f</span>
+
+            </div>
+
           </div>
 
           <div>
-            <h4>Company</h4>
-            <a href="#about">About Us</a>
-            <a href="#contact">Contact</a>
-            <a href="#home">Careers</a>
+
+            <h4>
+              Explore
+            </h4>
+
+            <button
+              onClick={() =>
+                scrollToSection("home")
+              }
+            >
+              Home
+            </button>
+
+            <button
+              onClick={() =>
+                scrollToSection("properties")
+              }
+            >
+              Buy Property
+            </button>
+
+            <button
+              onClick={() =>
+                scrollToSection("properties")
+              }
+            >
+              Rent Property
+            </button>
+
+            <button
+              onClick={() =>
+                scrollToSection("sell")
+              }
+            >
+              Sell Property
+            </button>
+
           </div>
 
           <div>
-            <h4>Properties</h4>
-            <a href="#properties">Buy Property</a>
-            <a href="#properties">Rent Property</a>
-            <a href="#sell">Sell Property</a>
+
+            <h4>
+              Company
+            </h4>
+
+            <button
+              onClick={() =>
+                scrollToSection("about")
+              }
+            >
+              About Us
+            </button>
+
+            <button
+              onClick={() =>
+                scrollToSection("contact")
+              }
+            >
+              Contact
+            </button>
+
+            <button
+              onClick={() =>
+                scrollToSection("home")
+              }
+            >
+              Careers
+            </button>
+
+            <button
+              onClick={() =>
+                scrollToSection("home")
+              }
+            >
+              Privacy Policy
+            </button>
+
           </div>
 
           <div>
-            <h4>Contact</h4>
-            <p>📍 Rajkot, Gujarat</p>
-            <p>📞 +91 98765 43210</p>
-            <p>✉️ info@homenest.com</p>
+
+            <h4>
+              Get in touch
+            </h4>
+
+            <p>
+              📍 Gujarat, India
+            </p>
+
+            <p>
+              📞 +91 98765 43210
+            </p>
+
+            <p>
+              ✉️ hello@estatepro.com
+            </p>
+
           </div>
+
         </div>
 
         <div className="copyright">
-          © 2026 HomeNest. All Rights Reserved.
+
+          <div className="container">
+
+            <span>
+              © 2026 EstatePro.
+              All Rights Reserved.
+            </span>
+
+            <span>
+              Built for the future of
+              real estate.
+            </span>
+
+          </div>
+
         </div>
+
       </footer>
+
     </div>
   );
 }
