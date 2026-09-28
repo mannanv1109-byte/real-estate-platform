@@ -1,0 +1,95 @@
+.settings-container {
+  max-width: 950px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.settings-section {
+  background: white;
+  border: 1px solid #e7e9ee;
+  border-radius: 16px;
+  padding: 22px;
+}
+
+.settings-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eef0f3;
+}
+
+.settings-title > span {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: #f8f0df;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.settings-title h2 {
+  margin: 0 0 4px;
+  font-size: 15px;
+}
+
+.settings-title p {
+  margin: 0;
+  color: #969daa;
+  font-size: 8px;
+}
+
+.setting-row {
+  min-height: 78px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #eef0f3;
+  gap: 20px;
+}
+
+.setting-row:last-child {
+  border-bottom: 0;
+}
+
+.setting-row strong {
+  display: block;
+  font-size: 10px;
+}
+
+.setting-row p {
+  margin: 5px 0 0;
+  color: #979eab;
+  font-size: 8px;
+}
+
+.setting-toggle {
+  width: 43px;
+  height: 24px;
+  padding: 3px;
+  border: 0;
+  border-radius: 20px;
+  background: #dfe2e6;
+  cursor: pointer;
+  transition: .25s;
+}
+
+.setting-toggle span {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: white;
+  display: block;
+  transition: .25s;
+  box-shadow: 0 2px 5px rgba(0,0,0,.15);
+}
+
+.setting-toggle.on {
+  background: #d2a04b;
+}
+
+.setting-toggle.on span {
+  transform: translateX(19px);
+}

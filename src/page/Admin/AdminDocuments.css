@@ -1,0 +1,103 @@
+.documents-grid {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 18px;
+}
+
+.document-card {
+  background: white;
+  border: 1px solid #e7e9ee;
+  border-radius: 16px;
+  padding: 20px;
+  position: relative;
+  transition: .3s;
+}
+
+.document-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 15px 30px rgba(20,30,50,.08);
+}
+
+.document-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  background: #f8f0df;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+
+.doc-status {
+  position: absolute;
+  right: 18px;
+  top: 20px;
+  padding: 6px 9px;
+  border-radius: 20px;
+  font-size: 8px;
+  font-weight: 900;
+}
+
+.doc-status.pending {
+  color: #a87521;
+  background: #fff3d7;
+}
+
+.doc-status.verified {
+  color: #28804d;
+  background: #e8f7ee;
+}
+
+.document-card h2 {
+  margin: 17px 0 5px;
+  font-size: 15px;
+}
+
+.document-card > p {
+  color: #929aa8;
+  font-size: 9px;
+}
+
+.document-meta {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid #eef0f3;
+  padding-top: 10px;
+  margin-top: 10px;
+  font-size: 8px;
+}
+
+.document-meta span {
+  color: #9ca3af;
+}
+
+.document-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.document-actions button {
+  flex: 1;
+  height: 35px;
+  border: 1px solid #e0e3e8;
+  border-radius: 8px;
+  background: white;
+  color: #b4812e;
+  cursor: pointer;
+  font-size: 8px;
+  font-weight: 800;
+}
+
+@media(max-width:900px) {
+  .documents-grid {
+    grid-template-columns: repeat(2,1fr);
+  }
+}
+
+@media(max-width:600px) {
+  .documents-grid {
+    grid-template-columns: 1fr;
+  }
+}

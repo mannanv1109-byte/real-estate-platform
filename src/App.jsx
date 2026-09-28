@@ -1,7 +1,44 @@
 import { useState } from "react";
 import "./App.css";
+
+// =====================================================
+// MAIN PAGES
+// =====================================================
+
 import LoginPage from "./page/LoginPage";
 import RegisterPage from "./page/RegisterPage";
+import SellerDashboard from "./page/SellerDashboard";
+
+// =====================================================
+// BUYER PAGES
+// =====================================================
+
+import BuyerDashboard from "./page/buyer/BuyerDashboard";
+import PropertyDetails from "./page/buyer/PropertyDetails";
+import Favourite from "./page/buyer/Favourite";
+import PurchasedProperty from "./page/buyer/PurchasedProperty";
+import BuyerProfile from "./page/buyer/BuyerProfile";
+import BuyerChat from "./page/buyer/BuyerChat";
+
+// =====================================================
+// ADMIN PAGES
+// =====================================================
+
+import AdminLogin from "./page/Admin/AdminLogin";
+import AdminDashboard from "./page/Admin/AdminDashboard";
+import AdminUsers from "./page/Admin/AdminUsers";
+import AdminProperties from "./page/Admin/AdminProperties";
+import PropertyVerification from "./page/Admin/PropertyVerification";
+import AdminDocuments from "./page/Admin/AdminDocuments";
+import AdminReports from "./page/Admin/AdminReports";
+import AdminTransactions from "./page/Admin/AdminTransactions";
+import AdminProfile from "./page/Admin/AdminProfile";
+import AdminSettings from "./page/Admin/AdminSettings";
+
+
+// =====================================================
+// PROPERTY DATA
+// =====================================================
 
 const properties = [
   {
@@ -16,6 +53,7 @@ const properties = [
     image:
       "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=85",
   },
+
   {
     id: 2,
     title: "Premium City Apartment",
@@ -28,6 +66,7 @@ const properties = [
     image:
       "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=85",
   },
+
   {
     id: 3,
     title: "Premium Family Residence",
@@ -40,6 +79,7 @@ const properties = [
     image:
       "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=85",
   },
+
   {
     id: 4,
     title: "Contemporary Dream Home",
@@ -52,6 +92,7 @@ const properties = [
     image:
       "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1200&q=85",
   },
+
   {
     id: 5,
     title: "Green Luxury Villa",
@@ -64,6 +105,7 @@ const properties = [
     image:
       "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?auto=format&fit=crop&w=1200&q=85",
   },
+
   {
     id: 6,
     title: "Modern Urban Apartment",
@@ -78,6 +120,10 @@ const properties = [
   },
 ];
 
+// =====================================================
+// CATEGORY DATA
+// =====================================================
+
 const categories = [
   {
     title: "Apartments",
@@ -85,18 +131,21 @@ const categories = [
     type: "Apartment",
     count: "2,500+ Properties",
   },
+
   {
     title: "Independent Houses",
     icon: "🏡",
     type: "House",
     count: "1,800+ Properties",
   },
+
   {
     title: "Luxury Villas",
     icon: "🏰",
     type: "Villa",
     count: "950+ Properties",
   },
+
   {
     title: "Plots & Land",
     icon: "🌳",
@@ -105,113 +154,201 @@ const categories = [
   },
 ];
 
+// =====================================================
+// APP
+// =====================================================
+
 function App() {
-  // ================= PAGE =================
+  
+  // =====================================================
+  // PAGE
+  // =====================================================
+
   const [currentPage, setCurrentPage] = useState("home");
 
-  // ================= NAVBAR =================
+  // =====================================================
+  // NAVBAR
+  // =====================================================
+
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // ================= SEARCH =================
+  // =====================================================
+  // SEARCH
+  // =====================================================
+
   const [activeTab, setActiveTab] = useState("Buy");
+
   const [location, setLocation] = useState("");
+
   const [propertyType, setPropertyType] = useState("All");
+
   const [priceRange, setPriceRange] = useState("Any Price");
 
-  // ================= PROPERTY =================
+  // =====================================================
+  // PROPERTY
+  // =====================================================
+
   const [favorites, setFavorites] = useState([]);
+
   const [showAll, setShowAll] = useState(false);
 
-  // ================= SCROLL =================
+  // =====================================================
+  // SCROLL TO SECTION
+  // =====================================================
+
   const scrollToSection = (id) => {
     const section = document.getElementById(id);
 
     if (section) {
       section.scrollIntoView({
         behavior: "smooth",
+        block: "start",
       });
     }
 
     setMenuOpen(false);
   };
-  if (currentPage === "login") {
-    return (
-      <LoginPage
-        onBackHome={() => setCurrentPage("home")}
-        onRegister={() => setCurrentPage("register")}
-      />
-    );
-  }
 
-  // Register page
-  if (currentPage === "register") {
-    return (
-      <RegisterPage
-        onBackHome={() => setCurrentPage("home")}
-        onLogin={() => setCurrentPage("login")}
-      />
-    );
-  }
-  
+  // =====================================================
+  // NAVIGATION HELPER
+  // =====================================================
 
-  // ================= FAVORITE =================
+  const navigateTo = (page) => {
+    setCurrentPage(page);
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+
+    setMenuOpen(false);
+  };
+
+  // =====================================================
+  // FAVORITE
+  // =====================================================
+
   const toggleFavorite = (id) => {
     if (favorites.includes(id)) {
       setFavorites(
-        favorites.filter((item) => item !== id)
+        favorites.filter(
+          (item) => item !== id
+        )
       );
     } else {
-      setFavorites([...favorites, id]);
+      setFavorites([
+        ...favorites,
+        id,
+      ]);
     }
   };
 
-  // ================= FILTER =================
-  const filteredProperties = properties.filter((property) => {
-    const searchText = location.toLowerCase().trim();
+  // =====================================================
+  // FILTER
+  // =====================================================
 
-    const locationMatch =
-      searchText === "" ||
-      property.location.toLowerCase().includes(searchText) ||
-      property.title.toLowerCase().includes(searchText);
+  const filteredProperties = properties.filter(
+    (property) => {
+      const searchText =
+        location.toLowerCase().trim();
 
-    const typeMatch =
-      propertyType === "All" ||
-      property.type === propertyType;
+      const locationMatch =
+        searchText === "" ||
+        property.location
+          .toLowerCase()
+          .includes(searchText) ||
+        property.title
+          .toLowerCase()
+          .includes(searchText);
 
-    let priceMatch = true;
+      const typeMatch =
+        propertyType === "All" ||
+        property.type === propertyType;
 
-    if (priceRange === "Under ₹50 Lakh") {
-      priceMatch = false;
+      let priceMatch = true;
+
+      if (priceRange === "Under ₹50 Lakh") {
+        priceMatch = false;
+      }
+
+      if (
+        priceRange ===
+        "₹50 - ₹80 Lakh"
+      ) {
+        priceMatch =
+          property.price === "₹62 Lakh" ||
+          property.price === "₹75 Lakh";
+      }
+
+      if (
+        priceRange ===
+        "₹80 Lakh - ₹1 Crore"
+      ) {
+        priceMatch =
+          property.price === "₹88 Lakh" ||
+          property.price === "₹95 Lakh";
+      }
+
+      if (
+        priceRange ===
+        "Above ₹1 Crore"
+      ) {
+        priceMatch =
+          property.price === "₹1.25 Cr" ||
+          property.price === "₹1.45 Cr";
+      }
+
+      return (
+        locationMatch &&
+        typeMatch &&
+        priceMatch
+      );
     }
-
-    if (priceRange === "₹50 - ₹80 Lakh") {
-      priceMatch =
-        property.price === "₹62 Lakh" ||
-        property.price === "₹75 Lakh";
-    }
-
-    if (priceRange === "₹80 Lakh - ₹1 Crore") {
-      priceMatch =
-        property.price === "₹88 Lakh" ||
-        property.price === "₹95 Lakh";
-    }
-
-    if (priceRange === "Above ₹1 Crore") {
-      priceMatch =
-        property.price === "₹1.25 Cr" ||
-        property.price === "₹1.45 Cr";
-    }
-
-    return (
-      locationMatch &&
-      typeMatch &&
-      priceMatch
-    );
-  });
-
+  );
+if (currentPage === "admin-login") {
+  return (
+    <AdminLogin
+      onBackHome={() => setCurrentPage("home")}
+    />
+  );
+}
   const visibleProperties = showAll
     ? filteredProperties
     : filteredProperties.slice(0, 3);
+
+  // =====================================================
+  // LOGIN PAGE
+  // =====================================================
+
+  if (currentPage === "login") {
+    return (
+      <LoginPage
+        onBackHome={() =>
+          navigateTo("home")
+        }
+        onRegister={() =>
+          navigateTo("register")
+        }
+      />
+    );
+  }
+
+  // =====================================================
+  // REGISTER PAGE
+  // =====================================================
+
+  if (currentPage === "register") {
+    return (
+      <RegisterPage
+        onBackHome={() =>
+          navigateTo("home")
+        }
+        onLogin={() =>
+          navigateTo("login")
+        }
+      />
+    );
+  }
 
   // =====================================================
   // SELLER DASHBOARD
@@ -220,10 +357,147 @@ function App() {
   if (currentPage === "seller") {
     return (
       <SellerDashboard
-        onBackHome={() => setCurrentPage("home")}
+        onBackHome={() =>
+          navigateTo("home")
+        }
       />
     );
   }
+
+  // =====================================================
+  // BUYER DASHBOARD
+  // =====================================================
+
+  if (currentPage === "buyer") {
+    return (
+      <BuyerDashboard
+        onBackHome={() =>
+          navigateTo("home")
+        }
+        onNavigate={navigateTo}
+      />
+    );
+  }
+
+  // =========================
+// BUYER DASHBOARD
+// =========================
+if (currentPage === "buyer") {
+  return (
+    <BuyerDashboard
+      onBackHome={() => setCurrentPage("home")}
+    />
+  );
+}
+if (currentPage === "buyer") {
+  return <BuyerDashboard />;
+}
+
+  // =====================================================
+  // PROPERTY DETAILS
+  // =====================================================
+
+  if (
+    currentPage ===
+    "property-details"
+  ) {
+    return (
+      <PropertyDetails
+        onBack={() =>
+          navigateTo("buyer")
+        }
+        onNavigate={navigateTo}
+      />
+    );
+  }
+
+  // =====================================================
+  // FAVOURITE
+  // =====================================================
+
+  if (
+    currentPage ===
+    "favourite"
+  ) {
+    return (
+      <Favourite
+        onBack={() =>
+          navigateTo("buyer")
+        }
+        onNavigate={navigateTo}
+      />
+    );
+  }
+
+  // =====================================================
+  // PURCHASED PROPERTY
+  // =====================================================
+
+  if (
+    currentPage ===
+    "purchased"
+  ) {
+    return (
+      <PurchasedProperty
+        onBack={() =>
+          navigateTo("buyer")
+        }
+        onNavigate={navigateTo}
+      />
+    );
+  }
+
+  // =====================================================
+  // BUYER PROFILE
+  // =====================================================
+
+  if (
+    currentPage ===
+    "buyer-profile"
+  ) {
+    return (
+      <BuyerProfile
+        onBack={() =>
+          navigateTo("buyer")
+        }
+        onNavigate={navigateTo}
+      />
+    );
+  }
+
+  // =====================================================
+  // BUYER CHAT
+  // =====================================================
+
+  if (
+    currentPage ===
+    "buyer-chat"
+  ) {
+    return (
+      <BuyerChat
+        onBack={() =>
+          navigateTo("buyer")
+        }
+        onNavigate={navigateTo}
+      />
+    );
+  }
+  if (currentPage === "buyer") {
+  return (
+    <BuyerDashboard
+      onBackHome={() => setCurrentPage("home")}
+    />
+  );
+}
+// Admin
+if (currentPage === "admin-login") {
+  return (
+    <AdminLogin
+      onBackHome={() => setCurrentPage("home")}
+      onAdminLogin={() => setCurrentPage("admin-dashboard")}
+    />
+  );
+}
 
   // =====================================================
   // HOME PAGE
@@ -232,23 +506,32 @@ function App() {
   return (
     <div className="app">
 
-      {/* ================= NAVBAR ================= */}
+      {/* =================================================
+          NAVBAR
+      ================================================= */}
 
       <header className="navbar">
         <div className="container nav-content">
 
+          {/* LOGO */}
+
           <button
             className="logo"
-            onClick={() => scrollToSection("home")}
+            onClick={() =>
+              scrollToSection("home")
+            }
           >
             <span className="logo-icon">
               ⌂
             </span>
 
             <span>
-              Estate<span>Pro</span>
+              Estate
+              <span>Pro</span>
             </span>
           </button>
+
+          {/* NAVIGATION */}
 
           <nav
             className={
@@ -268,7 +551,9 @@ function App() {
 
             <button
               onClick={() =>
-                scrollToSection("properties")
+                scrollToSection(
+                  "properties"
+                )
               }
             >
               Buy
@@ -276,7 +561,9 @@ function App() {
 
             <button
               onClick={() =>
-                scrollToSection("properties")
+                scrollToSection(
+                  "properties"
+                )
               }
             >
               Rent
@@ -308,24 +595,50 @@ function App() {
 
           </nav>
 
+          {/* NAV ACTIONS */}
+
           <div className="nav-actions">
 
             <button
-             className="login-btn"
-             onClick={() => setCurrentPage("login")}
-             >
-               Login
-             </button>
+              className="login-btn"
+              onClick={() =>
+                navigateTo("login")
+              }
+            >
+              Login
+            </button>
 
-            <button className="signup-btn">
+            <button
+              className="signup-btn"
+              onClick={() =>
+                navigateTo("register")
+              }
+            >
               Get Started
             </button>
 
-            <button className="profile-btn">
+            {/* BUYER */}
+
+            <button
+              className="profile-btn"
+              onClick={() =>
+                navigateTo("buyer")
+              }
+              title="Buyer Dashboard"
+            >
               👤
             </button>
 
+            {/* ADMIN */}
+
+      <button
+  onClick={() => setCurrentPage("admin-login")}
+>
+  Admin
+</button>
           </div>
+
+          {/* MOBILE MENU */}
 
           <button
             className="menu-btn"
@@ -333,13 +646,17 @@ function App() {
               setMenuOpen(!menuOpen)
             }
           >
-            {menuOpen ? "✕" : "☰"}
+            {menuOpen
+              ? "✕"
+              : "☰"}
           </button>
 
         </div>
       </header>
 
-      {/* ================= HERO ================= */}
+      {/* =================================================
+          HERO
+      ================================================= */}
 
       <section
         className="hero"
@@ -358,6 +675,8 @@ function App() {
 
         <div className="container hero-content">
 
+          {/* HERO TEXT */}
+
           <div className="hero-text">
 
             <span className="hero-badge">
@@ -368,39 +687,41 @@ function App() {
               Find a place
               <br />
               you'll{" "}
-              <span>love to live.</span>
+              <span>
+                love to live.
+              </span>
             </h1>
 
             <p>
-              Discover exceptional properties,
-              explore prime locations and connect
-              with trusted sellers — all in one
-              beautiful real estate experience.
+              Discover exceptional
+              properties, explore prime
+              locations and connect with
+              trusted sellers — all in one
+              beautiful real estate
+              experience.
             </p>
 
             <div className="hero-buttons">
+<button
+  className="hero-explore-btn"
+  onClick={() => setCurrentPage("buyer")}
+>
+  <span>Explore Properties</span>
+  <span className="hero-explore-arrow">→</span>
+</button>
 
               <button
-                className="primary-hero-btn"
+                className="sell-btn"
                 onClick={() =>
-                  scrollToSection("properties")
+                  navigateTo("seller")
                 }
               >
-                Explore Properties
-                <span>→</span>
-              </button>
-
-              {/* SELL YOUR PROPERTY */}
-              <button
-                className="secondary-hero-btn"
-                onClick={() =>
-                  setCurrentPage("seller")
-                }
-              >
-                Sell Your Property
+                List Your Property →
               </button>
 
             </div>
+
+            {/* TRUST */}
 
             <div className="hero-trust">
 
@@ -412,7 +733,10 @@ function App() {
               </div>
 
               <div>
-                <strong>5,000+</strong>
+                <strong>
+                  5,000+
+                </strong>
+
                 <small>
                   Happy homeowners
                 </small>
@@ -421,7 +745,10 @@ function App() {
               <div className="trust-divider"></div>
 
               <div>
-                <strong>4.9/5</strong>
+                <strong>
+                  4.9/5
+                </strong>
+
                 <small>
                   Customer rating ★
                 </small>
@@ -431,7 +758,9 @@ function App() {
 
           </div>
 
-          {/* ================= SEARCH ================= */}
+          {/* =================================================
+              SEARCH BOX
+          ================================================= */}
 
           <div className="search-box">
 
@@ -467,6 +796,8 @@ function App() {
 
             <div className="search-fields">
 
+              {/* LOCATION */}
+
               <div className="search-field">
 
                 <label>
@@ -475,7 +806,9 @@ function App() {
 
                 <div className="input-wrapper">
 
-                  <span>📍</span>
+                  <span>
+                    📍
+                  </span>
 
                   <input
                     type="text"
@@ -491,6 +824,8 @@ function App() {
                 </div>
 
               </div>
+
+              {/* PROPERTY TYPE */}
 
               <div className="search-field">
 
@@ -526,6 +861,8 @@ function App() {
                 </select>
 
               </div>
+
+              {/* PRICE */}
 
               <div className="search-field">
 
@@ -566,6 +903,8 @@ function App() {
 
               </div>
 
+              {/* SEARCH */}
+
               <button
                 className="search-btn"
                 onClick={() =>
@@ -574,7 +913,10 @@ function App() {
                   )
                 }
               >
-                <span>⌕</span>
+                <span>
+                  ⌕
+                </span>
+
                 Search
               </button>
 
@@ -586,53 +928,73 @@ function App() {
 
       </section>
 
-      {/* ================= STATS ================= */}
+      {/* =================================================
+          STATS
+      ================================================= */}
 
       <section className="stats">
 
         <div className="container stats-grid">
 
           <div className="stat">
+
             <strong>
-              10K<span>+</span>
+              10K
+              <span>+</span>
             </strong>
+
             <span>
               Premium Properties
             </span>
+
           </div>
 
           <div className="stat">
+
             <strong>
-              5K<span>+</span>
+              5K
+              <span>+</span>
             </strong>
+
             <span>
               Happy Customers
             </span>
+
           </div>
 
           <div className="stat">
+
             <strong>
-              25<span>+</span>
+              25
+              <span>+</span>
             </strong>
+
             <span>
               Cities Covered
             </span>
+
           </div>
 
           <div className="stat">
+
             <strong>
-              2K<span>+</span>
+              2K
+              <span>+</span>
             </strong>
+
             <span>
               Verified Sellers
             </span>
+
           </div>
 
         </div>
 
       </section>
 
-      {/* ================= PROPERTIES ================= */}
+      {/* =================================================
+          PROPERTIES
+      ================================================= */}
 
       <section
         className="properties-section"
@@ -654,8 +1016,8 @@ function App() {
               </h2>
 
               <p>
-                Hand-picked homes from trusted
-                property owners.
+                Hand-picked homes from
+                trusted property owners.
               </p>
 
             </div>
@@ -673,7 +1035,8 @@ function App() {
 
           </div>
 
-          {visibleProperties.length > 0 ? (
+          {visibleProperties.length >
+          0 ? (
 
             <div className="property-grid">
 
@@ -685,16 +1048,24 @@ function App() {
                     key={property.id}
                   >
 
+                    {/* IMAGE */}
+
                     <div className="property-image">
 
                       <img
-                        src={property.image}
-                        alt={property.title}
+                        src={
+                          property.image
+                        }
+                        alt={
+                          property.title
+                        }
                       />
 
                       <span className="property-tag">
                         ✓ VERIFIED
                       </span>
+
+                      {/* FAVORITE */}
 
                       <button
                         className={
@@ -731,6 +1102,8 @@ function App() {
 
                     </div>
 
+                    {/* PROPERTY INFO */}
+
                     <div className="property-info">
 
                       <div className="property-top">
@@ -750,21 +1123,25 @@ function App() {
                       </h3>
 
                       <p className="location">
-                        📍 {property.location}
+                        📍{" "}
+                        {property.location}
                       </p>
 
                       <div className="property-details">
 
                         <span>
-                          🛏 {property.beds} Beds
+                          🛏{" "}
+                          {property.beds} Beds
                         </span>
 
                         <span>
-                          🛁 {property.baths} Baths
+                          🛁{" "}
+                          {property.baths} Baths
                         </span>
 
                         <span>
-                          📐 {property.area}
+                          📐{" "}
+                          {property.area}
                         </span>
 
                       </div>
@@ -783,7 +1160,15 @@ function App() {
 
                         </div>
 
-                        <button>
+                        {/* IMPORTANT */}
+
+                        <button
+                          onClick={() =>
+                            navigateTo(
+                              "property-details"
+                            )
+                          }
+                        >
                           View Details →
                         </button>
 
@@ -802,7 +1187,9 @@ function App() {
 
             <div className="no-result">
 
-              <div>⌕</div>
+              <div>
+                ⌕
+              </div>
 
               <h3>
                 No properties found
@@ -810,7 +1197,8 @@ function App() {
 
               <p>
                 Try another location,
-                property type or price range.
+                property type or price
+                range.
               </p>
 
             </div>
@@ -821,7 +1209,9 @@ function App() {
 
       </section>
 
-      {/* ================= CATEGORIES ================= */}
+      {/* =================================================
+          CATEGORIES
+      ================================================= */}
 
       <section className="categories">
 
@@ -838,9 +1228,9 @@ function App() {
             </h2>
 
             <p>
-              From modern apartments to luxury
-              villas, discover a property made
-              for you.
+              From modern apartments to
+              luxury villas, discover a
+              property made for you.
             </p>
 
           </div>
@@ -852,7 +1242,9 @@ function App() {
 
                 <button
                   className="category-card"
-                  key={category.title}
+                  key={
+                    category.title
+                  }
                   onClick={() => {
 
                     setPropertyType(
@@ -893,7 +1285,9 @@ function App() {
 
       </section>
 
-      {/* ================= EXPERIENCE ================= */}
+      {/* =================================================
+          EXPERIENCE
+      ================================================= */}
 
       <section className="experience-section">
 
@@ -908,7 +1302,9 @@ function App() {
 
             <div className="experience-card">
 
-              <span>✦</span>
+              <span>
+                ✦
+              </span>
 
               <div>
 
@@ -917,7 +1313,8 @@ function App() {
                 </strong>
 
                 <small>
-                  Designed around your needs
+                  Designed around your
+                  needs
                 </small>
 
               </div>
@@ -935,23 +1332,28 @@ function App() {
             <h2>
               More than a property.
               <span>
-                {" "}It's your next chapter.
+                {" "}
+                It's your next chapter.
               </span>
             </h2>
 
             <p>
-              Buying or selling a home should
-              feel exciting, not complicated.
-              EstatePro brings properties,
-              people, locations and communication
-              together in one seamless platform.
+              Buying or selling a home
+              should feel exciting, not
+              complicated. EstatePro
+              brings properties, people,
+              locations and communication
+              together in one seamless
+              platform.
             </p>
 
             <div className="experience-list">
 
               <div>
 
-                <span>01</span>
+                <span>
+                  01
+                </span>
 
                 <div>
 
@@ -960,8 +1362,9 @@ function App() {
                   </h4>
 
                   <p>
-                    Browse properties reviewed
-                    by our platform.
+                    Browse properties
+                    reviewed by our
+                    platform.
                   </p>
 
                 </div>
@@ -970,7 +1373,9 @@ function App() {
 
               <div>
 
-                <span>02</span>
+                <span>
+                  02
+                </span>
 
                 <div>
 
@@ -989,7 +1394,9 @@ function App() {
 
               <div>
 
-                <span>03</span>
+                <span>
+                  03
+                </span>
 
                 <div>
 
@@ -998,8 +1405,9 @@ function App() {
                   </h4>
 
                   <p>
-                    Find homes based on your
-                    location and needs.
+                    Find homes based on
+                    your location and
+                    needs.
                   </p>
 
                 </div>
@@ -1025,7 +1433,9 @@ function App() {
 
       </section>
 
-      {/* ================= SELL PROPERTY ================= */}
+      {/* =================================================
+          SELL PROPERTY
+      ================================================= */}
 
       <section
         className="sell-section"
@@ -1049,9 +1459,10 @@ function App() {
             </h2>
 
             <p>
-              List your property on EstatePro
-              and connect with verified buyers
-              looking for their next home.
+              List your property on
+              EstatePro and connect with
+              verified buyers looking for
+              their next home.
             </p>
 
             <div className="sell-points">
@@ -1070,14 +1481,10 @@ function App() {
 
             </div>
 
-            {/* ===========================
-                IMPORTANT SELLER BUTTON
-            ============================ */}
-
             <button
               className="sell-btn"
               onClick={() =>
-                setCurrentPage("seller")
+                navigateTo("seller")
               }
             >
               List Your Property →
@@ -1110,7 +1517,9 @@ function App() {
 
       </section>
 
-      {/* ================= WHY ESTATEPRO ================= */}
+      {/* =================================================
+          WHY ESTATEPRO
+      ================================================= */}
 
       <section
         className="why-section"
@@ -1132,8 +1541,8 @@ function App() {
             </h2>
 
             <p>
-              A smarter experience for buyers
-              and sellers.
+              A smarter experience for
+              buyers and sellers.
             </p>
 
           </div>
@@ -1221,9 +1630,10 @@ function App() {
               </h3>
 
               <p>
-                A clean, modern and interactive
-                platform designed for effortless
-                property discovery.
+                A clean, modern and
+                interactive platform designed
+                for effortless property
+                discovery.
               </p>
 
             </div>
@@ -1234,7 +1644,9 @@ function App() {
 
       </section>
 
-      {/* ================= FINAL CTA ================= */}
+      {/* =================================================
+          FINAL CTA
+      ================================================= */}
 
       <section className="final-cta">
 
@@ -1250,7 +1662,8 @@ function App() {
           <h2>
             Let's find the place
             <br />
-            that feels like <i>home.</i>
+            that feels like{" "}
+            <i>home.</i>
           </h2>
 
           <button
@@ -1267,11 +1680,15 @@ function App() {
 
       </section>
 
-      {/* ================= FOOTER ================= */}
+      {/* =================================================
+          FOOTER
+      ================================================= */}
 
       <footer id="contact">
 
         <div className="container footer-grid">
+
+          {/* BRAND */}
 
           <div className="footer-brand">
 
@@ -1282,26 +1699,41 @@ function App() {
               </span>
 
               <span>
-                Estate<span>Pro</span>
+                Estate
+                <span>Pro</span>
               </span>
 
             </div>
 
             <p>
-              A smarter and more beautiful way
-              to discover, buy and sell real estate.
+              A smarter and more beautiful
+              way to discover, buy and sell
+              real estate.
             </p>
 
             <div className="socials">
 
-              <span>in</span>
-              <span>𝕏</span>
-              <span>◎</span>
-              <span>f</span>
+              <span>
+                in
+              </span>
+
+              <span>
+                𝕏
+              </span>
+
+              <span>
+                ◎
+              </span>
+
+              <span>
+                f
+              </span>
 
             </div>
 
           </div>
+
+          {/* EXPLORE */}
 
           <div>
 
@@ -1311,7 +1743,9 @@ function App() {
 
             <button
               onClick={() =>
-                scrollToSection("home")
+                scrollToSection(
+                  "home"
+                )
               }
             >
               Home
@@ -1319,7 +1753,9 @@ function App() {
 
             <button
               onClick={() =>
-                scrollToSection("properties")
+                scrollToSection(
+                  "properties"
+                )
               }
             >
               Buy Property
@@ -1327,7 +1763,9 @@ function App() {
 
             <button
               onClick={() =>
-                scrollToSection("properties")
+                scrollToSection(
+                  "properties"
+                )
               }
             >
               Rent Property
@@ -1335,13 +1773,17 @@ function App() {
 
             <button
               onClick={() =>
-                scrollToSection("sell")
+                scrollToSection(
+                  "sell"
+                )
               }
             >
               Sell Property
             </button>
 
           </div>
+
+          {/* COMPANY */}
 
           <div>
 
@@ -1351,7 +1793,9 @@ function App() {
 
             <button
               onClick={() =>
-                scrollToSection("about")
+                scrollToSection(
+                  "about"
+                )
               }
             >
               About Us
@@ -1359,7 +1803,9 @@ function App() {
 
             <button
               onClick={() =>
-                scrollToSection("contact")
+                scrollToSection(
+                  "contact"
+                )
               }
             >
               Contact
@@ -1367,7 +1813,9 @@ function App() {
 
             <button
               onClick={() =>
-                scrollToSection("home")
+                scrollToSection(
+                  "home"
+                )
               }
             >
               Careers
@@ -1375,13 +1823,17 @@ function App() {
 
             <button
               onClick={() =>
-                scrollToSection("home")
+                scrollToSection(
+                  "home"
+                )
               }
             >
               Privacy Policy
             </button>
 
           </div>
+
+          {/* CONTACT */}
 
           <div>
 
@@ -1404,6 +1856,8 @@ function App() {
           </div>
 
         </div>
+
+        {/* COPYRIGHT */}
 
         <div className="copyright">
 
@@ -1428,5 +1882,9 @@ function App() {
     </div>
   );
 }
+
+// =====================================================
+// EXPORT
+// =====================================================
 
 export default App;

@@ -1,0 +1,137 @@
+.admin-properties-grid {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 18px;
+}
+
+.property-filter {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.property-filter button {
+  border: 1px solid #e0e3e8;
+  background: white;
+  padding: 9px 15px;
+  border-radius: 20px;
+  color: #70798a;
+  cursor: pointer;
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.property-filter button.selected {
+  background: #c99a43;
+  color: #111722;
+  border-color: #c99a43;
+}
+
+.admin-property-card {
+  background: white;
+  border: 1px solid #e7e9ee;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: .3s;
+  box-shadow: 0 5px 20px rgba(20,30,50,.035);
+}
+
+.admin-property-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 18px 35px rgba(20,30,50,.09);
+}
+
+.admin-property-cover {
+  height: 170px;
+  background:
+    linear-gradient(
+      135deg,
+      #ddd2bc,
+      #f4ead5
+    );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.admin-property-cover > span {
+  font-size: 55px;
+}
+
+.admin-property-cover .property-status {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+}
+
+.admin-property-card-body {
+  padding: 18px;
+}
+
+.admin-property-card-body > small {
+  color: #bc8933;
+  font-size: 8px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.admin-property-card-body h2 {
+  margin: 6px 0;
+  font-size: 16px;
+}
+
+.admin-property-card-body p {
+  margin: 0;
+  color: #9299a6;
+  font-size: 9px;
+}
+
+.admin-property-card-body > strong {
+  display: block;
+  margin-top: 11px;
+  color: #bd8b35;
+  font-size: 15px;
+}
+
+.seller-line {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+  padding-top: 13px;
+  border-top: 1px solid #eef0f3;
+  font-size: 8px;
+}
+
+.seller-line span {
+  color: #9ca3af;
+}
+
+.seller-line b {
+  color: #394356;
+}
+
+.admin-property-card-body > button {
+  width: 100%;
+  margin-top: 15px;
+  height: 38px;
+  border: 0;
+  border-radius: 8px;
+  background: #101722;
+  color: #e6c36f;
+  cursor: pointer;
+  font-size: 9px;
+  font-weight: 800;
+}
+
+@media(max-width:1000px) {
+  .admin-properties-grid {
+    grid-template-columns: repeat(2,1fr);
+  }
+}
+
+@media(max-width:650px) {
+  .admin-properties-grid {
+    grid-template-columns: 1fr;
+  }
+}

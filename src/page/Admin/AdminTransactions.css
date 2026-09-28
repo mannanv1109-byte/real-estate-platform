@@ -1,0 +1,66 @@
+.transaction-table {
+  background: white;
+  border: 1px solid #e7e9ee;
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.transaction-head,
+.transaction-row {
+  display: grid;
+  grid-template-columns: .8fr 1fr 1fr 1.4fr 1fr .9fr;
+  gap: 15px;
+  align-items: center;
+  padding: 16px 20px;
+}
+
+.transaction-head {
+  background: #fafbfc;
+  color: #9299a7;
+  font-size: 8px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.transaction-row {
+  min-height: 70px;
+  border-top: 1px solid #eef0f3;
+  font-size: 9px;
+}
+
+.transaction-row strong {
+  color: #b98531;
+}
+
+.transaction-row b {
+  color: #bd8b35;
+}
+
+.transaction-status {
+  width: fit-content;
+  padding: 6px 9px;
+  border-radius: 20px;
+  font-size: 7px;
+  font-weight: 900;
+}
+
+.transaction-status.completed {
+  background: #e8f7ee;
+  color: #2a8050;
+}
+
+.transaction-status.processing {
+  background: #fff3d6;
+  color: #a77420;
+}
+
+@media(max-width:900px) {
+  .transaction-table {
+    overflow-x: auto;
+  }
+
+  .transaction-head,
+  .transaction-row {
+    min-width: 850px;
+  }
+}

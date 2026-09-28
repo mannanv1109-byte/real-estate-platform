@@ -1,0 +1,181 @@
+.admin-page {
+  min-height: 100vh;
+  background: #f5f6f8;
+  padding: 35px;
+  font-family: Inter, Arial, sans-serif;
+  color: #192236;
+}
+
+.admin-page-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 25px;
+}
+
+.admin-page-header small {
+  color: #bd8b35;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 1.8px;
+}
+
+.admin-page-header h1 {
+  margin: 7px 0 5px;
+  font-size: 29px;
+}
+
+.admin-page-header p {
+  margin: 0;
+  color: #8e96a5;
+  font-size: 11px;
+}
+
+.admin-page-header button {
+  border: 1px solid #e1e4e9;
+  background: white;
+  padding: 11px 16px;
+  border-radius: 9px;
+  cursor: pointer;
+  color: #ad7c2d;
+  font-weight: 800;
+}
+
+.users-toolbar {
+  background: white;
+  border: 1px solid #e7e9ee;
+  padding: 16px;
+  border-radius: 14px;
+  display: flex;
+  gap: 10px;
+  margin-bottom: 17px;
+}
+
+.users-toolbar input {
+  flex: 1;
+  height: 42px;
+  border: 1px solid #e0e3e8;
+  border-radius: 9px;
+  padding: 0 13px;
+  outline: none;
+}
+
+.users-toolbar select {
+  width: 150px;
+  border: 1px solid #e0e3e8;
+  border-radius: 9px;
+  padding: 0 10px;
+}
+
+.users-table {
+  background: white;
+  border: 1px solid #e7e9ee;
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.users-table-head,
+.users-table-row {
+  display: grid;
+  grid-template-columns: 2fr 1.3fr .8fr .8fr .7fr;
+  align-items: center;
+  gap: 15px;
+  padding: 15px 20px;
+}
+
+.users-table-head {
+  background: #fafbfc;
+  color: #9299a7;
+  font-size: 9px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.users-table-row {
+  min-height: 75px;
+  border-top: 1px solid #eef0f3;
+  font-size: 10px;
+}
+
+.user-name-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-table-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #f6edda;
+  color: #aa7826;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+}
+
+.user-name-cell strong,
+.user-name-cell small {
+  display: block;
+}
+
+.user-name-cell small {
+  margin-top: 4px;
+  color: #9ba2ae;
+  font-size: 8px;
+}
+
+.role,
+.user-status {
+  width: fit-content;
+  padding: 6px 9px;
+  border-radius: 20px;
+  font-size: 8px;
+}
+
+.role.buyer {
+  color: #5666a3;
+  background: #edf0ff;
+}
+
+.role.seller {
+  color: #a87522;
+  background: #fff3d7;
+}
+
+.user-status.active {
+  color: #28804e;
+  background: #e8f7ee;
+}
+
+.user-status.blocked {
+  color: #b24d4d;
+  background: #fdeaea;
+}
+
+.users-table-row > button {
+  border: 1px solid #e0e3e8;
+  background: white;
+  color: #b27f2d;
+  border-radius: 7px;
+  padding: 7px;
+  cursor: pointer;
+  font-size: 8px;
+  font-weight: 800;
+}
+
+@media(max-width:800px) {
+  .admin-page {
+    padding: 20px 12px;
+  }
+
+  .users-table {
+    overflow-x: auto;
+  }
+
+  .users-table-head,
+  .users-table-row {
+    min-width: 850px;
+  }
+}
